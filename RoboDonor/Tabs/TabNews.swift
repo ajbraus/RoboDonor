@@ -56,24 +56,30 @@ struct TabNews: View {
     
     var body: some View {
         NavigationView {
-            ScrollView(.vertical) {
+            ScrollView {
                 if !self.articlesVM.articles.isEmpty {
                     ForEach(self.articlesVM.articles, id: \.id) { article in
-                        VStack(alignment: .leading) {
-//                            let url = URL(string: article.imgUrl!)!
-//                            KFImage(url)
-//                                .resizable()
-//                                .aspectRatio(contentMode: .fit)
-//                                .cornerRadius(4)
-                            Text(article.title!)
-                                .font(.headline)
-                        }
+                        ArticleView(article: article, url: URL(string: article.imgUrl!)!)
                     }
                 }
-            }
-            .padding(10)
-            .navigationBarTitle(Text("News & Updates"))
+            }.navigationBarTitle("News & Updates")
         }.onAppear(perform: self.articlesVM.fetchArticles)
+    }
+}
+
+struct ArticleView: View {
+    let article: Article
+    let url: URL
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            KFImage(url)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .cornerRadius(4)
+            Text(article.title!)
+                .font(.headline)
+        }
     }
 }
 
